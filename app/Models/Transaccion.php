@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Transaccion extends Model
 {
     use HasFactory;
-    protected $fillable = ['id_tipo_transaccion','Motivo','fecha','Monto'];
-    protected $allowIncluded = ['tipoTransaccion'];
+    protected $fillable = ['id_tipo_transaccion','Motivo','fecha','Monto','user_id'];
+    protected $allowIncluded = ['tipoTransaccion','user'];
 
     public function tipoTransaccion (){
         return $this->belongsTo(Tipo_Transaccion::class,'id_tipo_transaccion');

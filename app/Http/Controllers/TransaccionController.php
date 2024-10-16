@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Transaccion;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TransaccionController extends Controller
 {
@@ -29,8 +30,15 @@ class TransaccionController extends Controller
             'Motivo'=>'required|max:100',
             'fecha'=>'required|max:100',
             'Monto'=>'required|max:100',
+            'id_tipo_transaccion'=>'required',
+           
            ]);
-   
+           $id_user = Auth::id();
+        // var_dump($id_user);
+
+           $request['user_id'] = $id_user;
+
+            // var_dump($id_user);
            $transaccion = Transaccion::create($request->all());
    
            return response()->json($transaccion);
@@ -57,15 +65,21 @@ class TransaccionController extends Controller
         * @param  \App\Models\Transaccion
         * @return \Illuminate\Http\Response
         */
-       public function update(Request $request, Transaccion $transaccion)
+       public function update(Request $request, string $id)
        {
+        $transaccion = Transaccion::find($id);
            $request->validate([
             'Motivo'=>'required|max:100',
             'fecha'=>'required|max:100',
             'Monto'=>'required|max:100',
-            'id_tipo_transaccion'=>'required|max:100'
+            'id_tipo_transaccion'=>'required|max:100',
+            
         
            ]);
+           $id_user = Auth::id();
+           // var_dump($id_user);
+   
+              $request['user_id'] = $id_user;
    
            $transaccion->update($request->all());
    

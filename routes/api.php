@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TipoTransaccionController;
 use App\Models\Transaccion;
 use App\Http\Controllers\TransaccionController;
@@ -10,6 +11,30 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-Route::resource('transacciones',TransaccionController::class);
 
-Route::resource('tipoTransacciones',TipoTransaccionController::class);
+
+Route::group([
+
+    'middleware' => 'auth:api',
+    'prefix' => 'auth'
+
+], function ($router) {
+
+    Route::post('login', [AuthController::class,'login'])->withoutMiddleware(['auth:api']);
+    Route::post('logout', [AuthController::class,'logout']);
+    Route::post('refresh', [AuthController::class,'refresh']);
+    Route::post('me', [AuthController::class,'me']);
+
+});
+
+Route::group([
+
+    'middleware' => 'auth:api',
+   
+
+], function ($router) {
+    
+    Route::apiresource('transacciones',TransaccionController::class);
+    Route::apiresource('tipoTransacciones',TipoTransaccionController::class);
+
+});

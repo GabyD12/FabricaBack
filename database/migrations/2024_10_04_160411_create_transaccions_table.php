@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('fecha');
             $table->string('Monto');
             
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->foreign('user_id')->references('id')->on('users')->nullable();
 
             $table->unsignedBigInteger('id_tipo_transaccion')->nullable();
             $table->foreign('id_tipo_transaccion')->references('id')->on('tipo__transaccions')->nullable();
